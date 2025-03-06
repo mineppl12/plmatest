@@ -6,7 +6,7 @@ import axios from "axios";
 import MySwal from "~shared/ui/sweetalert";
 
 import { Card, Button } from "react-bootstrap";
-import DataTable from '~shared/ui/dataTable';
+import DataTable from '~shared/ui/datatable';
 
 import './index.scss';
 

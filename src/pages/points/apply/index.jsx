@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import axios from "axios";
 import './index.scss';
 
-import DataTable from "~shared/ui/dataTable";
+import DataTable from '~shared/ui/datatable';
 
 import { Card, Button } from "react-bootstrap";
 

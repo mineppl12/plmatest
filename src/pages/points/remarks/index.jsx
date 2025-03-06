@@ -4,11 +4,6 @@ import { useState, useEffect } from 'react';
 import axios from "axios";
 import moment from "moment";
 
-import DataTable from 'datatables.net-react';
-import DataTablesCore from 'datatables.net-bs5';
-
-DataTable.use(DataTablesCore);
-
 import { Card, Button } from "react-bootstrap";
 
 import './index.scss';
