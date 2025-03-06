@@ -6,7 +6,7 @@ import axios from "axios";
 import './index.scss';
 
 import { Card, Button } from "react-bootstrap";
-import DataTable from "~shared/ui/dataTable";
+import DataTable from "~shared/ui/datatable";
 
 const TITLE = import.meta.env.VITE_TITLE;
 
