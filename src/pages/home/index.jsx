@@ -6,6 +6,11 @@ import './index.scss';
 const TITLE = import.meta.env.VITE_TITLE;
 
 function Home(){
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        navigate("/points/view");
+    }, []);
 
     return(
         <>

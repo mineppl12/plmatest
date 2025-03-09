@@ -41,7 +41,7 @@ function Points_View(){
                 className,
                 num,
                 <NavLink to="/check_history">{name}</NavLink>,
-                "김철수",
+                name,
                 plus,
                 minus,
                 0,

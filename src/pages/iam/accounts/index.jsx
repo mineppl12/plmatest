@@ -38,7 +38,7 @@ function IAM_Accounts(){
             return [
                 id,
                 stuid,
-                "김철수",
+                name,
                 grade,
                 className,
                 num,

@@ -34,11 +34,6 @@ export const config = [
                         name: "상벌점 부여",
                     },
                     {
-                        pathKey: pathKeys.points.edit(),
-                        icon: "sync",
-                        name: "상벌점 수정",
-                    },
-                    {
                         pathKey: pathKeys.points.history(),
                         icon: "history",
                         name: "상벌점 기록",
@@ -149,6 +144,11 @@ export const config = [
                         name: "보관함 조작",
                     },
                     {
+                        pathKey: pathKeys.remote.case.schedule(),
+                        icon: "calendar-days",
+                        name: "보관함 스케쥴",
+                    },
+                    {
                         pathKey: pathKeys.remote.case.history(),
                         icon: "server",
                         name: "보관함 기록",
@@ -205,7 +205,7 @@ export const config = [
                     {
                         pathKey: pathKeys.iam.accounts(),
                         icon: "users-gear",
-                        name: "전체 계정 관리",
+                        name: "통합 계정 관리",
                     },
                     {
                         pathKey: pathKeys.iam.access(),    

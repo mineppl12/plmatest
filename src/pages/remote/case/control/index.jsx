@@ -36,7 +36,7 @@ function Case_Control(){
             return [
                 id,
                 <span className="dt-name">{name}</span>,
-                <span className={`dt-status ${status ? "open" : "closed"}`}>{status ? "열림" : "닫힘"}</span>,
+                <span className={`dt-status ${status ? "open" : "closed"}`}>{status ? "해제 중" : "잠김"}</span>,
                 <>
                     <Button className="rowButton operation" variant="success" size="sm">해제</Button>
                     <Button className="rowButton comm" variant="primary" size="sm">통신</Button>

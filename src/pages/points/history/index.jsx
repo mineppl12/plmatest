@@ -25,6 +25,8 @@ function Points_History(){
     const [ tableData, setTableData ] = useState([]);
     const [ columns, setColumns ] = useState([]);
 
+    const dataRef = useRef();
+
     const [ dataLoading, setDataLoading ] = useState(false);
 
     const [ optionList, setOptionList ] = useState([
@@ -37,7 +39,14 @@ function Points_History(){
 
     async function init(allData = false){
         const data = await getData("https://points.jshsus.kr/api/points/history", {allData});
-        
+
+        dataRef.current = data;
+        setupTable(data);
+    }
+
+    function setupTable(data){
+        if (!data) return;
+
         const dataList = data.map((x, idx) => {
             const { id, date, act_date, teacher, user, reason_caption, beforeplus, beforeminus, afterplus, afterminus } = x;
             const delta = afterplus - beforeplus - (afterminus - beforeminus);
@@ -47,19 +56,23 @@ function Points_History(){
                 id,
                 moment(date).format("YYYY-MM-DD"),
                 teacher.name,
-                <a href="#">{"김철수"} ({user.stuid})</a>,
+                <a href="#">{user.name} ({user.stuid})</a>,
                 `${user.name} (${user.stuid})`,
                 <>
                     <span className={`type ${delta < 0 ? "bad" : "good"}`}>{delta < 0 ? "벌점" : "상점"}</span>
                     <span className="score">{Math.abs(delta)}점</span>
                 </>,
                 delta,
-                reason_caption.length > 40 ? reason_caption.substring(0, 40) + '...'  : reason_caption,
+                reason_caption.length > 30 ? reason_caption.substring(0, 40) + '...'  : reason_caption,
                 moment(act_date).format("YYYY-MM-DD"),
-                <Button variant="danger" size="sm">삭제</Button>
+                <>
+                    <Button className="rowButton" variant="primary" size="sm" onClick={removeHandler}>수정</Button>
+                    <Button className="rowButton" variant="danger" size="sm" onClick={removeHandler}>삭제</Button>
+                </>
             ];
         });
-
+        
+        setTableData(dataList);
         setColumns([
             { data: "선택", orderable: false },
             { data: "ID", className: "dt-id" },
@@ -69,18 +82,15 @@ function Points_History(){
             { hidden: true },
             {
                 className: "dt-content",
-                data: <Dropdown onClick={optionHandler}>
-                        <Dropdown.Toggle variant="primary" id="dropdown-basic" size="sm"
-                                        >전체 보기</Dropdown.Toggle>
-
+                data: <Dropdown onClick={optionHandler} autoClose="outside">
+                        <Dropdown.Toggle variant="primary" id="dropdown-basic" size="sm">반영 내용</Dropdown.Toggle>
                         <Dropdown.Menu>
-                            {optionList.map((x, idx) => {
-                                return (<Dropdown.Item key={idx} active={x.view == true}
-                                    onClick={(e) => { optionSelect(e, idx, x); }}>
+                            {optionList.map((x, idx) => (
+                                <Dropdown.Item key={idx} active={x.view == true}
+                                    onClick={(e) => optionSelect(e, idx, optionList)}>
                                     {x.data}
-                                </Dropdown.Item>)
-                                }
-                            )}
+                                </Dropdown.Item>
+                            ))}
                         </Dropdown.Menu>
                     </Dropdown>,
                 orderBase: 7
@@ -90,21 +100,29 @@ function Points_History(){
             { data: "반영일시" },
             { data: "#", orderable: false }
         ]);
-        
-        setTableData(dataList);
     }
 
     function optionHandler(e){
         e.stopPropagation();
     }
 
-    function optionSelect(e, idx, x){
+    function optionSelect(e, idx, list){
         e = e || window.event;
 
-        const arr = [...optionList];
+        const arr = [...list];
         arr[idx].view = !arr[idx].view;
 
+        const finalData = dataRef.current.filter((data) => {
+            const { beforeplus, beforeminus, afterplus, afterminus } = data;
+            const delta = afterplus - beforeplus - (afterminus - beforeminus);
+
+            const type = delta < 0 ? 1 : 0;
+            
+            return arr[type].view;
+        });
+
         setOptionList(arr);
+        setupTable(finalData);
     }
 
     async function refreshData(){
@@ -121,6 +139,16 @@ function Points_History(){
         setDataLoading(true);
         await init(true);
         setDataLoading(false);
+    }
+    
+    function removeHandler(){
+        MySwal.fire({
+            title: "정말 회수 하시겠습니까?",
+            icon: "question",
+            confirmButtonText: "확인",
+            showCancelButton: true,
+            cancelButtonText: "취소"
+        });
     }
 
     return(

@@ -85,9 +85,7 @@ const DataTable = ({ columns, data, order, className, options }) => {
             return;
         }
 
-        const finalData = [];
-
-        wholeData.map((col, idx) => {
+        const finalData = wholeData.filter((col) => {
             const isValid = col.map((td, _) => {
                 if (!(typeof td == "string" || typeof td == "number")) return false;
                 td = String(td);
@@ -95,11 +93,7 @@ const DataTable = ({ columns, data, order, className, options }) => {
                 else false;
             }).reduce((x, y) => x || y);
 
-            if (!isValid) return [];
-            else{
-                finalData.push(col);
-                return col;
-            }
+            return isValid;
         });
 
         draw(finalData, columns, sortMethod, page);
@@ -200,34 +194,37 @@ const DataTable = ({ columns, data, order, className, options }) => {
                 </tbody>
             </table>
             <div className="tablePagination">
-                <Pagination>
-                    <Pagination.Prev disabled={page <= 1} onClick={() => { if (page > 1) draw(filteredData, columns, sortMethod, page - 1)}} />
-                    {
-                        maxPage > maxViewPage - 1 ? <>
-                            <Pagination.Item active={page == 1} onClick={() => { draw(filteredData, columns, sortMethod, 1)}} >{1}</Pagination.Item>
-                            {page >= maxViewPage - 1 ? <Pagination.Ellipsis /> : ""}
-                            {
-                                pageList(page, maxPage, maxViewPage - 1).map((x, idx) => <Pagination.Item key={idx}
-                                                                            active={x == page}
-                                                                            onClick={() => {draw(filteredData, columns, sortMethod, x)}}>
-                                                                            {x}
-                                                            </Pagination.Item>)
-                            }
-                            {page <= maxPage - maxViewPage + 2 ? <Pagination.Ellipsis /> : ""}
-                            <Pagination.Item active={page == maxPage} onClick={() => { draw(filteredData, columns, sortMethod, maxPage)}}>{maxPage}</Pagination.Item>
-                        </>
-                        : <>
-                            {
-                                pageList(page, maxPage, maxViewPage).map((x, idx) => <Pagination.Item key={idx}
-                                                                            active={x == page}
-                                                                            onClick={() => {draw(filteredData, columns, sortMethod, x)}}>
-                                                                            {x}
-                                                            </Pagination.Item>)
-                            }
-                        </>
-                    }
-                    <Pagination.Next disabled={page >= maxPage} onClick={() => { if (page < maxPage) draw(filteredData, columns, sortMethod, page + 1)}} />
-                </Pagination>
+                {
+                    options && options.pagination != false ? 
+                    <Pagination>
+                        <Pagination.Prev disabled={page <= 1} onClick={() => { if (page > 1) draw(filteredData, columns, sortMethod, page - 1)}} />
+                        {
+                            maxPage > maxViewPage - 1 ? <>
+                                <Pagination.Item active={page == 1} onClick={() => { draw(filteredData, columns, sortMethod, 1)}} >{1}</Pagination.Item>
+                                {page >= maxViewPage - 1 ? <Pagination.Ellipsis /> : ""}
+                                {
+                                    pageList(page, maxPage, maxViewPage - 1).map((x, idx) => <Pagination.Item key={idx}
+                                                                                active={x == page}
+                                                                                onClick={() => {draw(filteredData, columns, sortMethod, x)}}>
+                                                                                {x}
+                                                                </Pagination.Item>)
+                                }
+                                {page <= maxPage - maxViewPage + 2 ? <Pagination.Ellipsis /> : ""}
+                                <Pagination.Item active={page == maxPage} onClick={() => { draw(filteredData, columns, sortMethod, maxPage)}}>{maxPage}</Pagination.Item>
+                            </>
+                            : <>
+                                {
+                                    pageList(page, maxPage, maxViewPage).map((x, idx) => <Pagination.Item key={idx}
+                                                                                active={x == page}
+                                                                                onClick={() => {draw(filteredData, columns, sortMethod, x)}}>
+                                                                                {x}
+                                                                </Pagination.Item>)
+                                }
+                            </>
+                        }
+                        <Pagination.Next disabled={page >= maxPage} onClick={() => { if (page < maxPage) draw(filteredData, columns, sortMethod, page + 1)}} />
+                    </Pagination> : ""
+                }
             </div>
         </div>
         </>

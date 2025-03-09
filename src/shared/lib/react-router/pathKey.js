@@ -32,12 +32,6 @@ export const pathKeys = {
                 permission: "viewPointsApply"
             };
         },
-        edit(){
-            return {
-                link: pathKeys.points.root().concat("edit/"),
-                permission: "viewPointsEdit"
-            };
-        },
         history(){
             return {
                 link: pathKeys.points.root().concat("history/"),
@@ -137,6 +131,12 @@ export const pathKeys = {
                 return {
                     link: pathKeys.remote.case.root().concat("control/"),
                     permission: "viewRemoteCaseControl"
+                };
+            },
+            schedule(){
+                return {
+                    link: pathKeys.remote.case.root().concat("schedule/"),
+                    permission: "viewRemoteCaseSchedule"
                 };
             },
             history(){

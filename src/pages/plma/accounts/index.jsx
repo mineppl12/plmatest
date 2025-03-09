@@ -29,20 +29,19 @@ function PLMA_Accounts(){
     async function init(){
         let dataList = [];
 
-        dataList = await getData("https://points.jshsus.kr/api/iam");
+        dataList = await getData("https://points.jshsus.kr/api/points/view");
 
         dataList = dataList.map((x, idx) => {
-            const { id, stuid, name, grade, num, gender } = x;
+            const { id, stuid, grade, num, name } = x;
             const className = x.class;
 
             return [
                 id,
                 stuid,
-                "김철수",
+                name,
                 grade,
                 className,
                 num,
-                gender == "female" ? "여" : "남",
                 <>
                     <Button className="rowButton" variant="primary" size="sm">편집</Button>
                     <Button className="rowButton" variant="danger" size="sm">삭제</Button>
@@ -58,7 +57,6 @@ function PLMA_Accounts(){
             { data: "학년" },
             { data: "반" },
             { data: "번호" },
-            { data: "성별" },
             { data: "#", orderable: false }
         ]);
     }

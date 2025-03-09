@@ -62,6 +62,7 @@ const userType = {
         "viewMyDormRepair",
         
         "viewRemoteCaseControl",
+        "viewRemoteCaseSchedule",
         "viewRemoteCaseHistory",
     
         "viewPLMAAccounts",

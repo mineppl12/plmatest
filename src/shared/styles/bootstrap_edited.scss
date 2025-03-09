@@ -1,7 +1,8 @@
 @use "~shared/styles/variables.scss" as *;
 
 .card{
-    border: 0 !important;
+    border-radius: $space !important;
+    margin-bottom: 1rem;
 
     .card-header{
         width: 100%;
